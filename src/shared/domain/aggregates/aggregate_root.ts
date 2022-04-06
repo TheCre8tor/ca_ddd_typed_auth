@@ -1,4 +1,4 @@
-import { Entity } from "../../../modules/users/domain/entities/entity";
+import { Entity } from "../entities/entity";
 import { DomainEvent } from "../events/domain_events";
 import { IDomainEvent } from "../events/domain_event.interface";
 import { UniqueEntityID } from "../utils/unique_entity_id";

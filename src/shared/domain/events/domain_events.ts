@@ -1,4 +1,4 @@
-import { AggregateRoot } from "../../../modules/users/domain/aggregates/aggregate_root";
+import { AggregateRoot } from "../aggregates/aggregate_root";
 import { UniqueEntityID } from "../utils/unique_entity_id";
 import { IDomainEvent } from "./domain_event.interface";
 
