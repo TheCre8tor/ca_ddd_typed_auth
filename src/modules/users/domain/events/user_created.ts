@@ -1,6 +1,6 @@
 import { User } from "../aggregates/user";
-import { UniqueEntityID } from "../unique_entity_id";
-import { IDomainEvent } from "./domain_event.interface";
+import { UniqueEntityID } from "./../../../../shared/domain/utils/unique_entity_id";
+import { IDomainEvent } from "./../../../../shared/domain/events/domain_event.interface";
 
 export class UserCreated implements IDomainEvent {
   public dateTimeOccured: Date;

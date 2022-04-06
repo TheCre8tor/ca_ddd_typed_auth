@@ -1,5 +1,5 @@
 import { Result } from "../../../../shared/core/result";
-import { UniqueEntityID } from "../unique_entity_id";
+import { UniqueEntityID } from "./../../../../shared/domain/utils/unique_entity_id";
 import { Entity } from "./entity";
 
 export class UserId extends Entity<any> {

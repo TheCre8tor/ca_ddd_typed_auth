@@ -5,11 +5,11 @@ import { UserCreated } from "../events/user_created";
 import { UserDeleted } from "../events/user_deleted";
 import { UserLoggedIn } from "../events/user_logged_in";
 import { JWTToken, RefreshToken } from "../jwt";
-import { UniqueEntityID } from "../unique_entity_id";
+import { UniqueEntityID } from "./../../../../shared/domain/utils/unique_entity_id";
 import { UserEmail } from "../valueObjects/user_email";
 import { UserName } from "../valueObjects/user_name";
 import { UserPassword } from "../valueObjects/user_password";
-import { AggregateRoot } from "./aggregate_root";
+import { AggregateRoot } from "../../../../shared/domain/aggregates/aggregate_root";
 
 interface UserProps {
   email: UserEmail;

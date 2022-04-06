@@ -1,4 +1,4 @@
-import { ValueObject } from "./value_object";
+import { ValueObject } from "../../../../shared/domain/valueObjects/value_object";
 import argon2 from "argon2";
 import { Guard } from "../../../../shared/core/guard";
 import { Result } from "../../../../shared/core/result";
@@ -9,7 +9,7 @@ export interface IUserPasswordProps {
 }
 
 export class UserPassword extends ValueObject<IUserPasswordProps> {
-  public static minLength: number = 6;
+  private static minLength: number = 6;
 
   get value(): string {
     return this.props.value;
