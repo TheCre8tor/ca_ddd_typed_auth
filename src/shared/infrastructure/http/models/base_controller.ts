@@ -6,14 +6,6 @@ export abstract class BaseController {
     res: Response
   ): Promise<void | any>;
 
-  public fail(res: Response, error: Error | string) {
-    console.log(error);
-
-    return res.status(500).json({
-      message: error.toString(),
-    });
-  }
-
   public async execute(req: Request, res: Response): Promise<void> {
     try {
       await this.executeImpl(req, res);
@@ -73,5 +65,37 @@ export abstract class BaseController {
       403,
       message ? message : "Forbidden"
     );
+  }
+
+  public notFound(res: Response, message?: string) {
+    return BaseController.jsonResponse(
+      res,
+      404,
+      message ? message : "Not found"
+    );
+  }
+
+  public conflict(res: Response, message?: string) {
+    return BaseController.jsonResponse(
+      res,
+      409,
+      message ? message : "Conflict"
+    );
+  }
+
+  public tooMany(res: Response, message?: string) {
+    return BaseController.jsonResponse(
+      res,
+      429,
+      message ? message : "Too many request"
+    );
+  }
+
+  public fail(res: Response, error: Error | string) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: error.toString(),
+    });
   }
 }
