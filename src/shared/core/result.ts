@@ -1,13 +1,13 @@
-type ErrorState<T> = T | string | undefined;
+type ResultError<T> = T | string | undefined;
 
 export class Result<T> {
   public isSuccess: boolean;
   public isFailure: boolean;
-  public error: ErrorState<T>;
+  public error: ResultError<T>;
 
   private _value: T | undefined;
 
-  public constructor(isSuccess: boolean, error?: ErrorState<T>, value?: T) {
+  public constructor(isSuccess: boolean, error?: ResultError<T>, value?: T) {
     if (isSuccess && error) {
       throw new Error(
         "InvalidOperation: A result cannot be successful and contain an error"
