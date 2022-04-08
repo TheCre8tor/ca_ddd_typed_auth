@@ -48,7 +48,7 @@ export class CreateUserUseCase
     const username: UserName = usernameOrError.getValue();
 
     try {
-      log.info("get to usecase repository exists");
+      // Validate if email exist -->
       const userAlreadyExists = await this.repository.exists(email);
 
       if (userAlreadyExists) {
@@ -57,12 +57,13 @@ export class CreateUserUseCase
         );
       }
 
+      // Validate if username exist -->
       try {
         const usernameAlreadyTaken = await this.repository.getUserByUserName(
           username.value
         );
 
-        const userNameTaken = !!usernameAlreadyTaken === true;
+        const userNameTaken = !!usernameAlreadyTaken === false;
 
         if (userNameTaken) {
           return new Left(
@@ -71,18 +72,21 @@ export class CreateUserUseCase
         }
       } catch (err: any) {}
 
+      // Create new User Object with the values provided -->
       const userOrError: Result<User> = User.create({
         email,
         password,
         username,
       });
 
+      // Check if the user values contains error -->
       if (userOrError.isFailure) {
         return new Left(Result.fail<User>(userOrError.error as string));
       }
 
       const user: User = userOrError.getValue();
 
+      // Call DB Repository and Save the Data to DB -->
       await this.repository.save(user);
 
       return new Right(Result.ok<void>());

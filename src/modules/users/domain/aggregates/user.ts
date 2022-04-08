@@ -59,6 +59,10 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.refreshToken as RefreshToken;
   }
 
+  get isDeleted(): boolean {
+    return !!this.props.isDeleted;
+  }
+
   constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
   }
