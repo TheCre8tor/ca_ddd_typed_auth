@@ -3,7 +3,7 @@ import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
 @modelOptions({
   schemaOptions: { timestamps: true },
 })
-export class UserBluePrint {
+export class User {
   @prop({ lowercase: true, required: true, unique: true })
   email: string;
 
@@ -23,6 +23,6 @@ export class UserBluePrint {
   is_deleted: boolean;
 }
 
-const UserModel = getModelForClass(UserBluePrint);
+const UserModel = getModelForClass(User);
 
 export default UserModel;

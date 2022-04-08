@@ -48,6 +48,7 @@ export class CreateUserUseCase
     const username: UserName = usernameOrError.getValue();
 
     try {
+      log.info("get to usecase repository exists");
       const userAlreadyExists = await this.repository.exists(email);
 
       if (userAlreadyExists) {

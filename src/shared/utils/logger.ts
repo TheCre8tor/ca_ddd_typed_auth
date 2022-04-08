@@ -2,7 +2,7 @@ import logger from "pino";
 import dayjs from "dayjs";
 import config from "config";
 
-const logLevel = config.get<string>("logLovel");
+const logLevel = config.get<string>("logLevel");
 
 const log = logger({
   transport: {

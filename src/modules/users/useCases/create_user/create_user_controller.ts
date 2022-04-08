@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../../../shared/infrastructure/http/models/base_controller";
+import log from "../../../../shared/utils/logger";
 import { TextSanitizer } from "../../../../shared/utils/text_sanitizer";
 import { CreateUserDTO } from "./create_user_dto";
 import { CreateUserErrors } from "./create_user_errors";
