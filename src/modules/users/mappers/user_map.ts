@@ -19,20 +19,16 @@ export class UserMap implements Mapper<User> {
 
   public static toDomain(raw: any): User | null {
     const usernameOrError = UserName.create({ name: raw.username });
-    const userPassword = UserPassword.create({
+    const userPasswordOrError = UserPassword.create({
       value: raw.user_password,
       hashed: true,
     });
     const userEmailOrError = UserEmail.create(raw.user_email);
 
-    // log.info(userEmailOrError);
-    // log.info(userPassword);
-    // log.info(usernameOrError);
-
     const userOrError = User.create(
       {
         username: usernameOrError.getValue(),
-        password: userPassword.getValue(),
+        password: userPasswordOrError.getValue(),
         email: userEmailOrError.getValue(),
         isEmailVerified: raw.verified,
         isAdminUser: raw.is_admin,
