@@ -4,6 +4,9 @@ import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
   schemaOptions: { timestamps: true },
 })
 export class User {
+  @prop()
+  nano_id: string;
+
   @prop({ lowercase: true, required: true, unique: true })
   email: string;
 

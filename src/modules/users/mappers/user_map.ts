@@ -58,7 +58,7 @@ export class UserMap implements Mapper<User> {
     }
 
     return {
-      argon_id: user.userId.id.toString(),
+      nano_id: user.userId.id.toString(),
       email: user.email.value,
       verified: user.isEmailVerified,
       username: user.username.value,
