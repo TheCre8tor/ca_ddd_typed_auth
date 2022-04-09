@@ -4,7 +4,8 @@ import { UserName } from "../domain/valueObjects/user_name";
 
 export interface IUserRepository {
   exists(userEmail: UserEmail): Promise<boolean>;
-  getUserByUserId(userId: string): Promise<User>;
+  getUserByUserId(userId: string): Promise<User | null>;
   getUserByUserName(userName: UserName | string): Promise<User | null>;
-  save(user: User): Promise<void>;
+  update(user: User): Promise<void>;
+  save(user: User): Promise<{ [T: string]: string }>;
 }

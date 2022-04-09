@@ -96,13 +96,17 @@ export class User extends AggregateRoot<UserProps> {
     }
 
     const isNewUser = !!id === false;
+    const setIDIfPresent = !!id ? id : undefined;
 
-    const user = new User({
-      ...props,
-      isDeleted: props.isDeleted ? props.isDeleted : false,
-      isEmailVerified: props.isEmailVerified ? props.isEmailVerified : false,
-      isAdminUser: props.isAdminUser ? props.isAdminUser : false,
-    });
+    const user = new User(
+      {
+        ...props,
+        isDeleted: props.isDeleted ? props.isDeleted : false,
+        isEmailVerified: props.isEmailVerified ? props.isEmailVerified : false,
+        isAdminUser: props.isAdminUser ? props.isAdminUser : false,
+      },
+      setIDIfPresent
+    );
 
     if (isNewUser) {
       user.addDomainEvent(new UserCreated(user));

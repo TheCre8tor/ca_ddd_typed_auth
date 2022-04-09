@@ -19,8 +19,12 @@ export class UserRepositoryImpl implements IUserRepository {
     return !!findUser === true;
   }
 
-  public getUserByUserId(userId: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  public async getUserByUserId(userId: string): Promise<User | null> {
+    const user = await this.model.findOne({ nano_id: userId });
+
+    if (!!user === false) return null;
+
+    return UserMap.toDomain(user);
   }
 
   public async getUserByUserName(
@@ -28,23 +32,39 @@ export class UserRepositoryImpl implements IUserRepository {
   ): Promise<User | null> {
     const parameter = userName instanceof UserName;
 
-    const findUserName = await this.model.findOne({
+    const user = await this.model.findOne({
       username: parameter ? (<UserName>userName).value : userName,
     });
 
-    if (!!findUserName === true) return null;
+    if (!!user === true) return null;
 
-    return UserMap.toDomain(findUserName?.toJSON())!;
+    return UserMap.toDomain(user)!;
   }
 
-  public async save(user: User): Promise<void> {
+  public async update(user: User): Promise<void> {
+    const exits = await this.exists(user.email);
+
+    if (exits) {
+      const rawUserData = await UserMap.toPersistence(user);
+
+      await this.model.updateOne({ nano_id: user.id.toValue() }, rawUserData);
+    }
+
+    return;
+  }
+
+  public async save(user: User): Promise<{ [T: string]: any }> {
     const exists = await this.exists(user.email);
 
     if (!exists) {
       const rawUserData = await UserMap.toPersistence(user);
-      await this.model.create(rawUserData);
+
+      const userData = await this.model.create(rawUserData);
+
+      // todo: removed private data from object before sending it.
+      return userData.toObject();
     }
 
-    return;
+    return {};
   }
 }

@@ -20,10 +20,10 @@ export class UserMap implements Mapper<User> {
   public static toDomain(raw: any): User | null {
     const usernameOrError = UserName.create({ name: raw.username });
     const userPasswordOrError = UserPassword.create({
-      value: raw.user_password,
+      value: raw.password,
       hashed: true,
     });
-    const userEmailOrError = UserEmail.create(raw.user_email);
+    const userEmailOrError = UserEmail.create(raw.email);
 
     const userOrError = User.create(
       {
@@ -34,7 +34,7 @@ export class UserMap implements Mapper<User> {
         isAdminUser: raw.is_admin,
         isDeleted: raw.is_deleted,
       },
-      new UniqueEntityID(raw.user_id)
+      new UniqueEntityID(raw.nano_id)
     );
 
     userOrError.isFailure ? log.info(userOrError.error) : "";

@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../../../shared/infrastructure/http/models/base_controller";
-import log from "../../../../shared/utils/logger";
 import { TextSanitizer } from "../../../../shared/utils/text_sanitizer";
 import { CreateUserDTO } from "./create_user_dto";
 import { CreateUserErrors } from "./create_user_errors";
@@ -26,6 +25,10 @@ export class CreateUserController extends BaseController {
     try {
       const result = await this.usecase.execute(dto);
 
+      if (result.isRight()) {
+        return this.ok(res, result.value.getValue());
+      }
+
       if (result.isLeft()) {
         const error = result.value;
 
@@ -37,8 +40,6 @@ export class CreateUserController extends BaseController {
           default:
             return this.fail(res, error.errorValue());
         }
-      } else {
-        return this.ok(res);
       }
     } catch (err: any) {
       return this.fail(res, err);

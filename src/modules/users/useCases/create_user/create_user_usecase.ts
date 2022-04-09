@@ -16,7 +16,7 @@ type EitherResponse = Either<
   | CreateUserErrors.UsernameTakenError
   | AppError.UnexpectedError
   | Result<any>,
-  Result<void>
+  Result<{ [T: string]: any }>
 >;
 
 export class CreateUserUseCase
@@ -87,9 +87,9 @@ export class CreateUserUseCase
       const user: User = userOrError.getValue();
 
       // Call DB Repository and Save the Data to DB -->
-      await this.repository.save(user);
+      const result = await this.repository.save(user);
 
-      return new Right(Result.ok<void>());
+      return new Right(Result.ok(result));
     } catch (err: any) {
       return new Left(new AppError.UnexpectedError(err));
     }
