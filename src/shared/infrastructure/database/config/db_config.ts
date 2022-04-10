@@ -1,9 +1,9 @@
+import "dotenv/config";
 import mongoose from "mongoose";
-import config from "config";
 import log from "../../../utils/logger";
 
 async function connect() {
-  const dbUri = config.get<string>("dbUri");
+  const dbUri = process.env.DDD_FORUM_DB_HOST as string;
 
   log.info(`[DB]: Connecting to the database in ${"dev"} mode.`);
 
