@@ -1,6 +1,6 @@
 import { RedisClientType } from "redis";
 import { User } from "../../domain/aggregates/user";
-import { JWTClaims, JWTToken } from "../../domain/jwt";
+import { JWTClaims, JWTToken, RefreshToken } from "../../domain/jwt";
 import { IAuthService } from "./auth.service.interface";
 import { AbstractRedisClient } from "../redis/redis_client.abstract";
 
@@ -27,7 +27,7 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
    * about the current user.
    */
 
-  signJWT(props: JWTClaims): JWTToken {
+  public signJWT(props: JWTClaims): JWTToken {
     const claims: JWTClaims = {
       userId: props.userId,
       email: props.email,
@@ -36,14 +36,35 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
       adminUser: props.adminUser,
     };
 
-    return jwt.sign(claims, authConfig.secret!, {
+    return jwt.sign(claims, authConfig.privateKey!, {
       expiresIn: authConfig.tokenExpiryTime,
+      algorithm: "RS256",
     });
   }
 
-  decodeJWT(token: string): Promise<JWTClaims> {
-    throw new Error("Method not implemented.");
+  /**
+   * @method decodeJWT
+   * @desc Decodes the JWT using the server secret. If successful decode,
+   * it returns the data from the token.
+   * @param {token} string
+   * @return Promise<any>
+   */
+
+  public async decodeJWT(token: string): Promise<JWTClaims> {
+    try {
+      const result = jwt.verify(token, authConfig.publicKey, {
+        algorithms: ["RS256"],
+      });
+      return result as JWTClaims;
+    } catch (err: any) {
+      return err;
+    }
   }
+
+  private constructKey(username: string, refreshToken: RefreshToken): string {
+    return `refresh-${refreshToken}.${this.jwtHashName}.${username}`;
+  }
+
   createRefreshToken(): string {
     throw new Error("Method not implemented.");
   }
