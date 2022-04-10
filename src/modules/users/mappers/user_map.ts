@@ -5,7 +5,7 @@ import { User } from "../domain/aggregates/user";
 import { UserEmail } from "../domain/valueObjects/user_email";
 import { UserName } from "../domain/valueObjects/user_name";
 import { UserPassword } from "../domain/valueObjects/user_password";
-import { UserDTO } from "../dtos/user_dto";
+import { UserDTO, UserDTOLean } from "../dtos/user_dto";
 
 export class UserMap implements Mapper<User> {
   public static toDTO(user: User): UserDTO {
@@ -14,6 +14,14 @@ export class UserMap implements Mapper<User> {
       isEmailVerified: user.isEmailVerified,
       isAdminUser: user.isAdminUser,
       isDeleted: user.isDeleted,
+    };
+  }
+
+  public static toLean(user: User): UserDTOLean {
+    return {
+      nano_id: user.userId?.id.toValue(),
+      username: user.username.value,
+      email: user.email.value,
     };
   }
 

@@ -4,3 +4,9 @@ export interface UserDTO {
   isAdminUser?: boolean;
   isDeleted?: boolean;
 }
+
+export interface UserDTOLean {
+  nano_id: string | number;
+  email: string;
+  username: string;
+}

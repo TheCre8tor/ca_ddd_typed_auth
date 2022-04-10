@@ -5,4 +5,4 @@ import { userRepository } from "../../repositories/dependency.injection";
 const deleteUserUseCase = new DeleteUserUseCase(userRepository);
 const deleteUserController = new DeleteUserController(deleteUserUseCase);
 
-export { deleteUserUseCase, deleteUserController };
+export { deleteUserController };

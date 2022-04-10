@@ -8,7 +8,6 @@ import { IUserRepository } from "../../repositories/user_repository.interface";
 import { UserEmail } from "../../domain/valueObjects/user_email";
 import { UserPassword } from "../../domain/valueObjects/user_password";
 import { UserName } from "../../domain/valueObjects/user_name";
-import log from "../../../../shared/utils/logger";
 import { User } from "../../domain/aggregates/user";
 
 type EitherResponse = Either<
@@ -16,7 +15,7 @@ type EitherResponse = Either<
   | CreateUserErrors.UsernameTakenError
   | AppError.UnexpectedError
   | Result<any>,
-  Result<{ [T: string]: any }>
+  Result<void>
 >;
 
 export class CreateUserUseCase
@@ -63,7 +62,7 @@ export class CreateUserUseCase
           username.value
         );
 
-        const userNameTaken = !!usernameAlreadyTaken === false;
+        const userNameTaken = !!usernameAlreadyTaken === true;
 
         if (userNameTaken) {
           return new Left(
@@ -87,9 +86,9 @@ export class CreateUserUseCase
       const user: User = userOrError.getValue();
 
       // Call DB Repository and Save the Data to DB -->
-      const result = await this.repository.save(user);
+      await this.repository.save(user);
 
-      return new Right(Result.ok(result));
+      return new Right(Result.ok());
     } catch (err: any) {
       return new Left(new AppError.UnexpectedError(err));
     }

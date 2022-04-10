@@ -7,7 +7,6 @@ import { UserMap } from "../mappers/user_map";
 import log from "../../../shared/utils/logger";
 
 export class UserRepositoryImpl implements IUserRepository {
-  // todo: UserRepositoryImpl is not yet completed -->
   private model: typeof UserModel;
 
   constructor(model: typeof UserModel) {
@@ -36,7 +35,7 @@ export class UserRepositoryImpl implements IUserRepository {
       username: parameter ? (<UserName>userName).value : userName,
     });
 
-    if (!!user === true) return null;
+    if (!!user === false) return null;
 
     return UserMap.toDomain(user)!;
   }
@@ -46,25 +45,20 @@ export class UserRepositoryImpl implements IUserRepository {
 
     if (exits) {
       const rawUserData = await UserMap.toPersistence(user);
-
       await this.model.updateOne({ nano_id: user.id.toValue() }, rawUserData);
     }
 
     return;
   }
 
-  public async save(user: User): Promise<{ [T: string]: any }> {
+  public async save(user: User): Promise<void> {
     const exists = await this.exists(user.email);
 
     if (!exists) {
       const rawUserData = await UserMap.toPersistence(user);
-
-      const userData = await this.model.create(rawUserData);
-
-      // todo: removed private data from object before sending it.
-      return userData.toObject();
+      await this.model.create(rawUserData);
     }
 
-    return {};
+    return;
   }
 }

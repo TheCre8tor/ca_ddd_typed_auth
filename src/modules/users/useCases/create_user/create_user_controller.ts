@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../../../shared/infrastructure/http/models/base_controller";
 import { TextSanitizer } from "../../../../shared/utils/text_sanitizer";
+import { UserMap } from "../../mappers/user_map";
 import { CreateUserDTO } from "./create_user_dto";
 import { CreateUserErrors } from "./create_user_errors";
 import { CreateUserUseCase } from "./create_user_usecase";
@@ -26,7 +27,7 @@ export class CreateUserController extends BaseController {
       const result = await this.usecase.execute(dto);
 
       if (result.isRight()) {
-        return this.ok(res, result.value.getValue());
+        return this.ok(res);
       }
 
       if (result.isLeft()) {
