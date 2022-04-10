@@ -1,5 +1,7 @@
+import { keys } from "../../keys";
+
 const authConfig = {
-  secret: process.env.DDD_FORUM_APP_SECRET,
+  secret: keys.ACCESS_TOKEN_PRIVATE_KEY,
   tokenExpiryTime: 300, // seconds => 5 minutes
   redisServerPort: process.env.DDD_FORUM_REDIS_PORT || 6379,
   redisServerURL: process.env.DDD_FORUM_REDIS_SERVER_URL,
