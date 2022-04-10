@@ -7,4 +7,4 @@ const getUserByUserNameController = new GetUserByUserNameController(
   getUserByUserNameUseCase
 );
 
-export { getUserByUserNameController };
+export { getUserByUserNameUseCase, getUserByUserNameController };
