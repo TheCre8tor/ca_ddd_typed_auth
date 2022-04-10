@@ -7,7 +7,7 @@ import { JWTToken, RefreshToken } from "../../domain/jwt";
 import { UserEmail } from "../../domain/valueObjects/user_email";
 import { UserPassword } from "../../domain/valueObjects/user_password";
 import { IUserRepository } from "../../repositories/user_repository.interface";
-import { IAuthService } from "../../service/auth_service.interface";
+import { IAuthService } from "../../service/auth/auth.service.interface";
 import { LoginDTO, LoginDTOResponse } from "./login.dto";
 import { LoginUseCaseErrors } from "./login.errors";
 

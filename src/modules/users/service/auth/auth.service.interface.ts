@@ -1,5 +1,5 @@
-import { User } from "../domain/aggregates/user";
-import { JWTClaims, JWTToken, RefreshToken } from "../domain/jwt";
+import { User } from "../../domain/aggregates/user";
+import { JWTClaims, JWTToken, RefreshToken } from "../../domain/jwt";
 
 export interface IAuthService {
   signJWT(props: JWTClaims): JWTToken;

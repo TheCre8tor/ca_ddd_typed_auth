@@ -1,11 +1,10 @@
-import config from "config";
-
 const authConfig = {
-  secret: config.get("authConfig.secret"),
+  secret: process.env.DDD_FORUM_APP_SECRET,
   tokenExpiryTime: 300, // seconds => 5 minutes
-  redisServerPort: config.get("authConfig.redisServerPort") || 6379,
-  redisServerURL: config.get("authConfig.redisServerURL"),
-  redisConnectionString: config.get("authConfig.redisConnectionString"),
+  redisServerPort: process.env.DDD_FORUM_REDIS_PORT || 6379,
+  redisServerURL: process.env.DDD_FORUM_REDIS_SERVER_URL,
+  redisLocalURL: process.env.DDD_FORUM_REDIS_LOCAL_URL,
+  redisConnectionString: process.env.REDIS_URL,
 };
 
 export { authConfig };

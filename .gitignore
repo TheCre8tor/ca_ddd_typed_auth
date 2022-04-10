@@ -1,1 +1,12 @@
 node_modules
+config/default.ts
+config/production.ts
+.idea/
+.cache/
+.env
+
+# keys -->
+keys/access_token/*.key
+keys/access_token/*.pem
+keys/refresh_token/*.key
+keys/refresh_token/*.pem
