@@ -3,6 +3,7 @@ import { User } from "../../domain/aggregates/user";
 import { JWTClaims, JWTToken, RefreshToken } from "../../domain/jwt";
 import { IAuthService } from "./auth.service.interface";
 import { AbstractRedisClient } from "../redis/redis_client.abstract";
+import randtoken from "rand-token";
 
 import jwt from "jsonwebtoken";
 import { authConfig } from "../../../../config";
@@ -17,6 +18,7 @@ import { authConfig } from "../../../../config";
 
 export class AuthService extends AbstractRedisClient implements IAuthService {
   public jwtHashName: string = "activeJwtClients";
+
   constructor(redisClient: RedisClientType) {
     super(redisClient);
   }
@@ -36,9 +38,8 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
       adminUser: props.adminUser,
     };
 
-    return jwt.sign(claims, authConfig.privateKey!, {
+    return jwt.sign(claims, authConfig.secret_token!, {
       expiresIn: authConfig.tokenExpiryTime,
-      algorithm: "RS256",
     });
   }
 
@@ -52,24 +53,32 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
 
   public async decodeJWT(token: string): Promise<JWTClaims> {
     try {
-      const result = jwt.verify(token, authConfig.publicKey, {
-        algorithms: ["RS256"],
-      });
+      const result = jwt.verify(token, authConfig.secret_token!);
       return result as JWTClaims;
     } catch (err: any) {
       return err;
     }
   }
 
-  private constructKey(username: string, refreshToken: RefreshToken): string {
-    return `refresh-${refreshToken}.${this.jwtHashName}.${username}`;
+  private constructKey(email: string, refreshToken: RefreshToken): string {
+    return `refresh-${refreshToken}.${this.jwtHashName}.${email}`;
   }
 
-  createRefreshToken(): string {
-    throw new Error("Method not implemented.");
+  public createRefreshToken(): RefreshToken {
+    return randtoken.uid(256);
   }
-  getTokens(email: string): Promise<string[]> {
-    throw new Error("Method not implemented.");
+
+  /**
+   * @method getTokens
+   * @desc Gets the user's tokens that are currently active.
+   * @return Promise<string[]>
+   */
+
+  public async getTokens(email: string): Promise<string[]> {
+    const keyValues = await this.getAllKeyValue(
+      `*${this.jwtHashName}.${email}`
+    );
+    return keyValues.map((kv) => kv.value);
   }
   saveAuthenticatedUser(user: User): Promise<void> {
     throw new Error("Method not implemented.");
