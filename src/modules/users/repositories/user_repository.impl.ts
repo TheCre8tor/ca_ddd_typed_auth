@@ -18,6 +18,14 @@ export class UserRepositoryImpl implements IUserRepository {
     return !!findUser === true;
   }
 
+  public async getUserByEmail(email: UserEmail): Promise<User | null> {
+    const user = await this.model.findOne({ email: email.value });
+
+    if (!!user === false) return null;
+
+    return UserMap.toDomain(user);
+  }
+
   public async getUserByUserId(userId: string): Promise<User | null> {
     const user = await this.model.findOne({ nano_id: userId });
 

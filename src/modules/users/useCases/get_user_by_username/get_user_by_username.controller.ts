@@ -22,10 +22,6 @@ export class GetUserByUserNameController extends BaseController {
     try {
       const result = await this.usecase.execute(dto);
 
-      if (result.isRight()) {
-        return this.ok(res, UserMap.toLean(result.value.getValue()));
-      }
-
       if (result.isLeft()) {
         const error = result.value;
 
@@ -35,6 +31,8 @@ export class GetUserByUserNameController extends BaseController {
           default:
             return this.fail(res, error.errorValue().message);
         }
+      } else {
+        return this.ok(res);
       }
     } catch (err: any) {
       return this.fail(res, err);

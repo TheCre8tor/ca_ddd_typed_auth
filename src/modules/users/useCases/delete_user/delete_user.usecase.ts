@@ -4,7 +4,7 @@ import { Result } from "../../../../shared/core/result";
 import { UseCase } from "../../../../shared/useCases/usecase";
 import { IUserRepository } from "../../repositories/user_repository.interface";
 import { DeleteUserDTO } from "./delete_user.dto";
-import { DeleteUserErrors } from "./delete_user.error";
+import { DeleteUserErrors } from "./delete_user.errors";
 
 type EitherResponse = Either<
   AppError.UnexpectedError | DeleteUserErrors.UserNotFoundError,
