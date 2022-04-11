@@ -11,6 +11,7 @@ export abstract class AbstractRedisClient {
   public async getAllKeys(wildcard: string): Promise<string[]> {
     try {
       const allKeys = await this.client.keys(wildcard);
+
       return allKeys;
     } catch (err: any) {
       return err;
@@ -19,6 +20,7 @@ export abstract class AbstractRedisClient {
 
   public async count(key: string): Promise<number> {
     const allKeys = await this.getAllKeys(key);
+
     return allKeys.length;
   }
 
@@ -46,10 +48,13 @@ export abstract class AbstractRedisClient {
     try {
       const result = await this.client.keys(wildcard);
 
-      const allResults = await result.map(async (key) => {
-        const value = await this.getOne(key);
-        return { key, value };
-      });
+      const allResults = await Promise.all(
+        result.map(async (key) => {
+          const value = await this.getOne(key);
+
+          return { key, value };
+        })
+      );
 
       return allResults;
     } catch (err: any) {

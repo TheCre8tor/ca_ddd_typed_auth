@@ -44,9 +44,9 @@ export class LoginUseCase implements UseCase<LoginDTO, EitherResponse> {
 
       user = await this.repository.getUserByEmail(email);
 
-      const userNotFound = !!user === false;
+      const userFound = !!user === true;
 
-      if (userNotFound) {
+      if (!userFound) {
         return new Left(new LoginUseCaseErrors.InvalidEmailOrPasswordError());
       }
 

@@ -3,6 +3,7 @@ import { createUserController } from "../../../useCases/create_user/dependency.i
 import { deleteUserController } from "../../../useCases/delete_user/dependency.injection";
 import { getCurrentUserController } from "../../../useCases/get_current_user/dependency.injection";
 import { getUserByUserNameController } from "../../../useCases/get_user_by_username/dependency.injection";
+import { loginController } from "../../../useCases/login/dependency.injection";
 
 const userRouter = Router();
 
@@ -13,6 +14,10 @@ userRouter.post("/", (req: Request, res: Response) => {
 userRouter.get("/me", (req: Request, res: Response) => {
   return getCurrentUserController.execute(req, res);
 });
+
+userRouter.post("/login", (req: Request, res: Response) =>
+  loginController.execute(req, res)
+);
 
 userRouter.delete("/:userId", (req: Request, res: Response) => {
   return deleteUserController.execute(req, res);

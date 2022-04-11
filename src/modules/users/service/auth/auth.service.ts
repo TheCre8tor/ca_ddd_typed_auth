@@ -7,6 +7,7 @@ import randtoken from "rand-token";
 
 import jwt from "jsonwebtoken";
 import { authConfig } from "../../../../config";
+import c from "config";
 
 /**
  * @class JWTClient
@@ -78,6 +79,7 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
     const keyValues = await this.getAllKeyValue(
       `*${this.jwtHashName}.${email}`
     );
+
     return keyValues.map((kv) => kv.value);
   }
 
@@ -110,17 +112,13 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
     const keyValues = await this.getAllKeyValue(
       `*${this.jwtHashName}.${email}`
     );
-    const keys = keyValues.map((kv) => kv.key);
+    const keys = keyValues.map(async (kv) => kv.key);
 
-    try {
-      return keys.map((key) => this.deleteOne(key));
-    } catch (err: any) {
-      return err;
-    }
+    return Promise.all(keys.map(async (key) => this.deleteOne(await key)));
   }
 
   public async deAuthenticateUser(email: string): Promise<void> {
-    await this.clearAllSessions(email);
+    return await this.clearAllSessions(email);
   }
 
   public async refreshTokenExists(refreshToken: string): Promise<boolean> {

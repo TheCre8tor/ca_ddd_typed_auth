@@ -56,7 +56,7 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
     hashed: string
   ): Promise<boolean> {
     try {
-      return await argon2.verify(plainText, hashed);
+      return await argon2.verify(hashed, plainText);
     } catch (err: any) {
       return false;
     }
