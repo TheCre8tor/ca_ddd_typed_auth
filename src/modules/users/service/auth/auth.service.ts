@@ -80,16 +80,145 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
     );
     return keyValues.map((kv) => kv.value);
   }
-  saveAuthenticatedUser(user: User): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  public addToken(
+    email: string,
+    refreshToken: RefreshToken,
+    token: JWTToken
+  ): Promise<any> {
+    return this.set(this.constructKey(email, refreshToken), token);
   }
-  deAuthenticateUser(email: string): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  public async saveAuthenticatedUser(user: User): Promise<void> {
+    if (user.isLoggedIn()) {
+      await this.addToken(
+        user.email.value,
+        user.refreshToken,
+        user.accessToken
+      );
+    }
   }
-  refreshTokenExists(refreshToken: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+
+  /**
+   * @method clearAllSessions
+   * @desc Clears all active sessions for the current user.
+   * @param {username} string
+   * @return Promise<any>
+   */
+
+  public async clearAllSessions(email: string): Promise<any> {
+    const keyValues = await this.getAllKeyValue(
+      `*${this.jwtHashName}.${email}`
+    );
+    const keys = keyValues.map((kv) => kv.key);
+
+    try {
+      return keys.map((key) => this.deleteOne(key));
+    } catch (err: any) {
+      return err;
+    }
   }
-  getUserEmailFromRefreshToken(refreshToken: string): Promise<string> {
-    throw new Error("Method not implemented.");
+
+  public async deAuthenticateUser(email: string): Promise<void> {
+    await this.clearAllSessions(email);
+  }
+
+  public async refreshTokenExists(refreshToken: string): Promise<boolean> {
+    const keys = await this.getAllKeys(`*${refreshToken}`);
+    return keys.length !== 0;
+  }
+
+  public async getUserEmailFromRefreshToken(
+    refreshToken: string
+  ): Promise<string> {
+    const keys = await this.getAllKeys(`*${refreshToken}`);
+    const exists = keys.length !== 0;
+
+    if (!exists) throw new Error("Username not found for refresh token.");
+
+    const key = keys[0];
+
+    const indexOfKey = key.indexOf(this.jwtHashName);
+    return key.substring(indexOfKey + this.jwtHashName.length + 1);
+  }
+
+  // Additional APIs -->
+  /**
+   * @method clearAllTokens
+   * @desc Clears all jwt tokens from redis. Usually useful for testing.
+   * @return Promise<any>
+   */
+
+  public async clearAllTokens(): Promise<any> {
+    const allKeys = await this.getAllKeys(`*${this.jwtHashName}*`);
+    return Promise.all(allKeys.map((key) => this.deleteOne(key)));
+  }
+
+  /**
+   * @method countSessions
+   * @desc Counts the total number of sessions for a particular user.
+   * @param {email} string
+   * @return Promise<number>
+   */
+
+  public countSessions(email: string): Promise<number> {
+    return this.count(`*${this.jwtHashName}.${email}`);
+  }
+
+  /**
+   * @method countTokens
+   * @desc Counts the total number of sessions for a particular user.
+   * @return Promise<number>
+   */
+
+  public countTokens(): Promise<number> {
+    return this.count(`*${this.jwtHashName}`);
+  }
+
+  /**
+   * @method getToken
+   * @desc Gets a single token for the user.
+   * @param {email} string
+   * @param {refreshToken} string
+   * @return Promise<string>
+   */
+
+  public async getToken(
+    email: string,
+    refreshToken: RefreshToken
+  ): Promise<string> {
+    return this.getOne(this.constructKey(email, refreshToken));
+  }
+
+  /**
+   * @method clearToken
+   * @desc Deletes a single user's session token.
+   * @param {email} string
+   * @param {refreshToken} string
+   * @return Promise<string>
+   */
+
+  public async clearToken(
+    email: string,
+    refreshToken: RefreshToken
+  ): Promise<any> {
+    return this.deleteOne(this.constructKey(email, refreshToken));
+  }
+
+  /**
+   * @method sessionExists
+   * @desc Checks if the session for this user exists
+   * @param {email} string
+   * @param {refreshToken} string
+   * @return Promise<boolean>
+   */
+
+  public async sessionExists(
+    email: string,
+    refreshToken: RefreshToken
+  ): Promise<boolean> {
+    const token = await this.getToken(email, refreshToken);
+
+    return !!token ? true : false;
   }
 }

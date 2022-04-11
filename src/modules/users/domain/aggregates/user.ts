@@ -41,6 +41,10 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.password;
   }
 
+  get accessToken(): string {
+    return this.props.accessToken as string;
+  }
+
   // TODO: monitor the result of this function because of the bang operator
   get isEmailVerified(): boolean {
     return !!this.props.isEmailVerified;
