@@ -40,3 +40,5 @@ class LogoutUseCase implements UseCase<LogoutDTO, EitherResponse> {
     }
   }
 }
+
+export { LogoutUseCase };
