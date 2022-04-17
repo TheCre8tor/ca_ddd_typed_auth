@@ -3,10 +3,10 @@ import { AuthService } from "./auth/auth.service";
 
 const authService = new AuthService(redisConnection);
 
-// authService
-//   .countSessions("alexander@gmail.com")
-//   .then((t) => console.log(t))
-//   .catch((err) => console.log(err));
+authService
+  .countSessions("goodluck@gmail.com")
+  .then((t) => console.log(t))
+  .catch((err) => console.log(err));
 
 // authService
 //   .getTokens("alexader@gmail.com")
