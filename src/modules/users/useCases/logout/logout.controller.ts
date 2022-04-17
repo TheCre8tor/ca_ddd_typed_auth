@@ -16,7 +16,7 @@ class LogoutController extends BaseController {
     req: DecodedExpressRequest,
     res: Response
   ): Promise<any> {
-    const { userId } = req.decoded;
+    const { userId } = res.locals.decoded;
 
     try {
       const result = await this.usecase.execute({ userId });
