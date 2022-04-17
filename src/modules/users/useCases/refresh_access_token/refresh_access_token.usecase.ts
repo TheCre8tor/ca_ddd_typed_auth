@@ -48,7 +48,7 @@ export class RefreshAccessTokenUseCase
         return new Left(new RefreshAccessTokenErrors.RefreshTokenNotFound());
       }
 
-      const accessToken = await this.authService.signJWT({
+      const accessToken: JWTToken = this.authService.signJWT({
         userId: user?.userId.id.toString()!,
         isEmailVerified: user?.isEmailVerified!,
         email: user?.email.value!,
