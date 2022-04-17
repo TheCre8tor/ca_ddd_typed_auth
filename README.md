@@ -27,3 +27,7 @@ You can create a user by sending a POST request to `http://localhost:3000/users`
   "password": "test1234"
 }
 ```
+
+You can delete a user by sending a DELETE request to `http://localhost:3000/users/:userId`.
+
+You can get user by sending a GET request to `http://localhost:3000/users/:username`.
