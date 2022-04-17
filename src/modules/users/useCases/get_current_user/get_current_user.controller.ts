@@ -14,9 +14,8 @@ export class GetCurrentUserController extends BaseController {
   }
 
   public async executeImpl(req: DecodedExpressRequest, res: Response) {
-    const { username } = req.decoded;
+    const { username } = res.locals.decoded;
 
-    console.log(req);
     try {
       const result = await this.usecase.execute({ username });
 
