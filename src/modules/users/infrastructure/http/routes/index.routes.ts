@@ -13,20 +13,20 @@ userRouter.post("/", (req: Request, res: Response) => {
   return createUserController.execute(req, res);
 });
 
-userRouter.get(
-  "/me",
-  routeGuard.ensureAuthenticated(),
-  (req: Request, res: Response) => getCurrentUserController.execute(req, res)
-);
-
 userRouter.post("/login", (req: Request, res: Response) => {
   return loginController.execute(req, res);
 });
 
-userRouter.post(
-  "/logout",
-  routeGuard.ensureAuthenticated(),
-  (req: Request, res: Response) => logoutController.execute(req, res)
+// Authenticated Routes -->
+
+userRouter.use(routeGuard.ensureAuthenticated());
+
+userRouter.get("/me", (req: Request, res: Response) =>
+  getCurrentUserController.execute(req, res)
+);
+
+userRouter.post("/logout", (req: Request, res: Response) =>
+  logoutController.execute(req, res)
 );
 
 userRouter.delete("/:userId", (req: Request, res: Response) => {
