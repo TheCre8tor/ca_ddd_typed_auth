@@ -18,8 +18,12 @@ export class UserRepositoryImpl implements IUserRepository {
     return !!findUser === true;
   }
 
-  public async getUserByEmail(email: UserEmail): Promise<User | null> {
-    const user = await this.model.findOne({ email: email.value });
+  public async getUserByEmail(email: string | UserEmail): Promise<User | null> {
+    const parameter = email instanceof UserEmail;
+
+    const user = await this.model.findOne({
+      email: parameter ? (<UserEmail>email).value : email,
+    });
 
     if (!!user === false) return null;
 
