@@ -92,10 +92,8 @@ export abstract class BaseController {
   }
 
   public fail(res: Response, error: Error | string) {
-    console.log(error);
-
     return res.status(500).json({
-      message: error.toString(),
+      message: error,
     });
   }
 }

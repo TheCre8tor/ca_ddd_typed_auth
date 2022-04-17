@@ -26,7 +26,9 @@ export class GetUserByUserNameUseCase
       });
 
       if (usernameOrError.isFailure) {
-        return new Left(Result.fail<any>(usernameOrError.error?.toString()!));
+        return new Left(
+          new AppError.UnexpectedError(usernameOrError.error?.toString())
+        );
       }
 
       const username: UserName = usernameOrError.getValue();

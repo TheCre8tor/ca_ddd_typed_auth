@@ -25,7 +25,7 @@ export class Result<T> {
     this.error = error;
     this._value = value;
 
-    Object.freeze(this);
+    // Object.freeze(this);
   }
 
   public getValue(): T {

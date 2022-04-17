@@ -3,10 +3,9 @@ import { UseCaseError } from "./usecase_error";
 
 export namespace AppError {
   export class UnexpectedError extends Result<UseCaseError> {
-    public constructor(err: any) {
+    public constructor(err?: any) {
       super(false, {
-        message: `An unexpected error occured`,
-        error: err,
+        message: !!err ? err : `An unexpected error occured`,
       } as UseCaseError);
     }
 
