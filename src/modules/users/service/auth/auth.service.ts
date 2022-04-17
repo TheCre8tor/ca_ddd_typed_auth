@@ -129,10 +129,10 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
   public async getUserEmailFromRefreshToken(
     refreshToken: string
   ): Promise<string> {
-    const keys = await this.getAllKeys(`*${refreshToken}`);
+    const keys = await this.getAllKeys(`*${refreshToken}*`);
     const exists = keys.length !== 0;
 
-    if (!exists) throw new Error("Username not found for refresh token.");
+    if (!exists) throw new Error("Email not found for refresh token.");
 
     const key = keys[0];
 

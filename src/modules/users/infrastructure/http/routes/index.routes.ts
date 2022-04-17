@@ -6,6 +6,7 @@ import { getCurrentUserController } from "../../../useCases/get_current_user/dep
 import { getUserByUserNameController } from "../../../useCases/get_user_by_username/dependency.injection";
 import { loginController } from "../../../useCases/login/dependency.injection";
 import { logoutController } from "../../../useCases/logout/dependency.injection";
+import { refreshAccessTokenController } from "../../../useCases/refresh_access_token/dependency.injection";
 
 const userRouter = Router();
 
@@ -15,6 +16,10 @@ userRouter.post("/", (req: Request, res: Response) => {
 
 userRouter.post("/login", (req: Request, res: Response) => {
   return loginController.execute(req, res);
+});
+
+userRouter.post("/token/refresh", (req: Request, res: Response) => {
+  return refreshAccessTokenController.execute(req, res);
 });
 
 // Authenticated Routes -->
