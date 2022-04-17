@@ -4,7 +4,7 @@ import { AuthService } from "./auth/auth.service";
 const authService = new AuthService(redisConnection);
 
 // authService
-//   .countSessions("alexader@gmail.com")
+//   .countSessions("alexander@gmail.com")
 //   .then((t) => console.log(t))
 //   .catch((err) => console.log(err));
 
@@ -34,7 +34,7 @@ const authService = new AuthService(redisConnection);
 //   .catch((err) => console.log(err));
 
 // authService
-//   .deAuthenticateUser("alexader@gmail.com")
+//   .deAuthenticateUser("goodluck@gmail.com")
 //   .then((value) => console.log(value))
 //   .catch((err) => console.log(err));
 
