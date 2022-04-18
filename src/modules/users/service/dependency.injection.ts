@@ -1,5 +1,6 @@
 import { redisConnection } from "./redis/redis.connection";
 import { AuthService } from "./auth/auth.service";
+import log from "../../../shared/utils/logger";
 
 const authService = new AuthService(redisConnection);
 
@@ -9,7 +10,7 @@ const authService = new AuthService(redisConnection);
 //   .catch((err) => console.log(err));
 
 // authService
-//   .getTokens("alexader@gmail.com")
+//   .getTokens("goodluck@gmail.com")
 //   .then((t) => console.log(t))
 //   .catch((err) => console.log(err));
 
@@ -18,13 +19,13 @@ const authService = new AuthService(redisConnection);
 //   .then((t) => console.log(t))
 //   .catch((err) => console.log(err));
 
-authService
-  .getToken(
-    "goodluck@gmail.com",
-    "tZrBeO93MxZJadGozUd3wKuMqmsVGOCQqA4EQZgU6J67jRAMdfeqYSJjVFvT7T7ullsXqdOU1JRpq71CYOdNhtSrqgyVSMCeeAntJPLg9JpBBXnZ8cfAO6ZnOSQMVFZcb3o8tuBsENrF2kqJD7NiXglVojLG4EJ5TdDKIktzfBAq8Fs7PmZIsDUEVKY1jSeKdhf0j3ivEI4Yaf46hmFsu1l8K4Uy1F4YapFNaS3s1TN05DGX6NqeeKSnu3QmePiV"
-  )
-  .then((t) => console.log(t))
-  .catch((err) => console.log(err));
+// authService
+//   .getToken(
+//     "goodluck@gmail.com",
+//     "tZrBeO93MxZJadGozUd3wKuMqmsVGOCQqA4EQZgU6J67jRAMdfeqYSJjVFvT7T7ullsXqdOU1JRpq71CYOdNhtSrqgyVSMCeeAntJPLg9JpBBXnZ8cfAO6ZnOSQMVFZcb3o8tuBsENrF2kqJD7NiXglVojLG4EJ5TdDKIktzfBAq8Fs7PmZIsDUEVKY1jSeKdhf0j3ivEI4Yaf46hmFsu1l8K4Uy1F4YapFNaS3s1TN05DGX6NqeeKSnu3QmePiV"
+//   )
+//   .then((t) => console.log(t))
+//   .catch((err) => console.log(err));
 
 // authService
 //   .decodeJWT(
@@ -42,7 +43,7 @@ authService
 //   .getUserEmailFromRefreshToken(
 //     "9CkKAd5fqOoMjvHw8xQcqgpmKQfc4wlwqzmUuUiODTSQkJwvPMFv7tkLZd5TMLKQ98UW8LqMXd4SAVMVmJUkLJ6qgP6wNO0ZbfkmgIDcNIdxOHQBVAAWoNMHxQfAKf3ic8teUtyBcJD6vneG1lUACcwUPtrYyDMFWEzrJX3sZJKFbe8hdlxungxfjDeGk72llgI1KnuO7UqKCFT9ZM2Ou7lit0La3yRjDgUInw2awpJSEY7FALjsyef49GAmqecJ"
 //   )
-//   .then((value) => console.log(value))
+//   .then((value) => log.info(value))
 //   .catch((err) => console.log(err));
 
 // authService
