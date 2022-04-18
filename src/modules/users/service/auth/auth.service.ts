@@ -170,7 +170,7 @@ export class AuthService extends AbstractRedisClient implements IAuthService {
    */
 
   public countTokens(): Promise<number> {
-    return this.count(`*${this.jwtHashName}`);
+    return this.count(`*${this.jwtHashName}*`);
   }
 
   /**
