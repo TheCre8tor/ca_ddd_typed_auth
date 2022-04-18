@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json({}));
 
-app.use(v1Router);
+app.use("/api/v1", v1Router);
 
 const port = process.env.APP_PORT;
 
