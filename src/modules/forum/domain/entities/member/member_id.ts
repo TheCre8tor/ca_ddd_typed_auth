@@ -1,6 +1,6 @@
-import { Result } from '../../../../shared/core/result';
-import { Entity } from '../../../../shared/domain/entities/entity';
-import { UniqueEntityID } from '../../../../shared/domain/utils/unique_entity_id';
+import { Result } from '../../../../../shared/core/result';
+import { Entity } from '../../../../../shared/domain/entities/entity';
+import { UniqueEntityID } from '../../../../../shared/domain/utils/unique_entity_id';
 
 export class MemberId extends Entity<any> {
     get id(): UniqueEntityID {

@@ -1,11 +1,11 @@
-import { Guard } from '../../../../shared/core/guard';
-import { Result } from '../../../../shared/core/result';
-import { AggregateRoot } from '../../../../shared/domain/aggregates/aggregate_root';
-import { UniqueEntityID } from '../../../../shared/domain/utils/unique_entity_id';
-import { UserId } from '../../../users/domain/entities/user_id';
-import { UserName } from '../../../users/domain/valueObjects/user_name';
-import { MemberCreated } from '../events/member_created';
 import { MemberId } from './member_id';
+import { UserId } from '../../../../users/domain/entities/user_id';
+import { UserName } from '../../../../users/domain/valueObjects/user_name';
+import { AggregateRoot } from '../../../../../shared/domain/aggregates/aggregate_root';
+import { UniqueEntityID } from '../../../../../shared/domain/utils/unique_entity_id';
+import { Guard } from '../../../../../shared/core/guard';
+import { Result } from '../../../../../shared/core/result';
+import { MemberCreated } from '../../events/member_created';
 
 interface MemberProps {
     userId: UserId;

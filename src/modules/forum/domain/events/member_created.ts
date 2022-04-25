@@ -1,6 +1,6 @@
 import { IDomainEvent } from '../../../../shared/domain/events/domain_event.interface';
 import { UniqueEntityID } from '../../../../shared/domain/utils/unique_entity_id';
-import { Member } from '../entities/member';
+import { Member } from '../entities/member/member';
 
 export class MemberCreated implements IDomainEvent {
     public dateTimeOccured: Date;
