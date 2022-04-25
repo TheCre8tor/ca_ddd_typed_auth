@@ -4,7 +4,8 @@ import { AggregateRoot } from '../../../../shared/domain/aggregates/aggregate_ro
 import { UniqueEntityID } from '../../../../shared/domain/utils/unique_entity_id';
 import { UserId } from '../../../users/domain/entities/user_id';
 import { UserName } from '../../../users/domain/valueObjects/user_name';
-import { MemberId } from '../value_objects/member/member_id';
+import { MemberCreated } from '../events/member_created';
+import { MemberId } from './member_id';
 
 interface MemberProps {
     userId: UserId;
@@ -49,7 +50,9 @@ export class Member extends AggregateRoot<MemberProps> {
         const isNewMember = !!id === false;
 
         if (isNewMember) {
-            // member.addDomainEvent()
+            member.addDomainEvent(new MemberCreated(member));
         }
+
+        return Result.ok<Member>(member);
     }
 }
