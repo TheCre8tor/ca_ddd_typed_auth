@@ -1,6 +1,6 @@
 import { Guard } from '../../../../../shared/core/guard';
 import { Result } from '../../../../../shared/core/result';
-import { ValueObject } from '../../../../../shared/domain/valueObjects/value_object';
+import { ValueObject } from '../../../../../shared/domain/value_objects/value_object';
 
 interface CommentTextProps {
     value: string;
