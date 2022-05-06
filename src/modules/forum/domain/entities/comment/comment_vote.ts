@@ -66,5 +66,34 @@ export class CommentVote extends Entity<CommentVoteProps> {
         if (!commentGuard.succeeded) {
             return Result.fail<CommentVote>(commentGuard.message!);
         }
+
+        return Result.ok<CommentVote>(
+            new CommentVote({
+                memberId,
+                commentId,
+                type: 'UPVOTE'
+            })
+        );
+    }
+
+    public static createDownvote(memberId: MemberId, commentId: CommentVote): Result<CommentVote> {
+        const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
+        const commentGuard = Guard.againstNullOrUndefined(commentId, 'commentId');
+
+        if (!memberGuard.succeeded) {
+            return Result.fail<CommentVote>(memberGuard.message!);
+        }
+
+        if (!commentGuard.succeeded) {
+            return Result.fail<CommentVote>(commentGuard.message!);
+        }
+
+        return Result.ok<CommentVote>(
+            new CommentVote({
+                memberId,
+                commentId,
+                type: 'DOWNVOTE'
+            })
+        );
     }
 }
