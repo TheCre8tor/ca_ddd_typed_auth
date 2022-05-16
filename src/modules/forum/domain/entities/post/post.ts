@@ -249,6 +249,9 @@ export class Post extends AggregateRoot<PostProps> {
 
         if (isNewPost) {
             post.addDomainEvent(new PostCreated(post));
+
+            // Create with initial upvote from whoever created the post
+            post.addVote(PostVote.cra);
         }
     }
 }
