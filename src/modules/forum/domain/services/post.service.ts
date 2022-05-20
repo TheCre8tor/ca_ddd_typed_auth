@@ -55,5 +55,40 @@ export class PostService {
         member: Member,
         comment: Comment,
         existingVotesCommentByMember: CommentVote[]
-    ): UpvoteCommentResponse {}
+    ): UpvoteCommentResponse {
+        // If upvote already exists
+        const existingUpvote: CommentVote | undefined = existingVotesCommentByMember.find(vote => vote.isUpvote());
+
+        const upvoteAlreadyExists = !!existingUpvote;
+
+        if (upvoteAlreadyExists) {
+            return new Right(Result.ok<void>());
+        }
+
+        // If downvote exists, we need to promote and remove it.
+        const existingDownvote: CommentVote | undefined = existingVotesCommentByMember.find(vote => vote.isDownvote());
+
+        const downvoteAlreadyExists = !!existingDownvote;
+
+        if (downvoteAlreadyExists) {
+            comment.removeVote(existingDownvote);
+            post.updateComment(comment);
+
+            return new Right(Result.ok<void>());
+        }
+
+        // Otherwise, give the comment an upvote.
+        const upvoteOrError = CommentVote.createUpvote(member.memberId, comment.commentId);
+
+        if (upvoteOrError.isFailure) {
+            return new Left(upvoteOrError);
+        }
+
+        const upvote: CommentVote = upvoteOrError.getValue();
+        comment.addVote(upvote);
+
+        post.updateComment(comment);
+
+        return new Right(Result.ok<void>());
+    }
 }
