@@ -1,6 +1,7 @@
 import { Left, Right } from '../../../../shared/core/either';
 import { Result } from '../../../../shared/core/result';
 import { DownvoteCommentResponse } from '../../usecases/comments/downvote_comment/downvote_comment';
+import { UpvoteCommentResponse } from '../../usecases/comments/upvote_comment/upvote_comment.response';
 import { Comment } from '../entities/comment/comment';
 import { CommentVote } from '../entities/comment/comment_vote';
 import { Member } from '../entities/member/member';
@@ -48,4 +49,11 @@ export class PostService {
 
         return new Right(Result.ok<void>());
     }
+
+    public upvoteComment(
+        post: Post,
+        member: Member,
+        comment: Comment,
+        existingVotesCommentByMember: CommentVote[]
+    ): UpvoteCommentResponse {}
 }
