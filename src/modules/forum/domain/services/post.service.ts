@@ -38,8 +38,14 @@ export class PostService {
         const downvoteOrError = CommentVote.createDownvote(member.memberId, comment.commentId);
 
         if (downvoteOrError.isFailure) {
-            // TODO: Continue from here!
             return new Left(downvoteOrError);
         }
+
+        const downvote: CommentVote = downvoteOrError.getValue();
+
+        comment.addVote(downvote);
+        post.updateComment(comment);
+
+        return new Right(Result.ok<void>());
     }
 }
