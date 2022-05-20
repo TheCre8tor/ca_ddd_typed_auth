@@ -251,7 +251,9 @@ export class Post extends AggregateRoot<PostProps> {
             post.addDomainEvent(new PostCreated(post));
 
             // Create with initial upvote from whoever created the post
-            post.addVote(PostVote.cra);
+            post.addVote(PostVote.createUpvote(props.memberId, post.postId).getValue());
         }
+
+        return Result.ok<Post>(post);
     }
 }

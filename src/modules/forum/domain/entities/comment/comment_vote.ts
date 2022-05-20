@@ -76,7 +76,7 @@ export class CommentVote extends Entity<CommentVoteProps> {
         );
     }
 
-    public static createDownvote(memberId: MemberId, commentId: CommentVote): Result<CommentVote> {
+    public static createDownvote(memberId: MemberId, commentId: CommentId): Result<CommentVote> {
         const memberGuard = Guard.againstNullOrUndefined(memberId, 'memberId');
         const commentGuard = Guard.againstNullOrUndefined(commentId, 'commentId');
 
