@@ -1,4 +1,4 @@
-import { Left, Right } from '../../../../shared/core/either';
+import { Either, Left, Right } from '../../../../shared/core/either';
 import { Result } from '../../../../shared/core/result';
 import { DownvoteCommentResponse } from '../../usecases/comments/downvote_comment/downvote_comment';
 import { UpvoteCommentResponse } from '../../usecases/comments/upvote_comment/upvote_comment.response';
@@ -8,6 +8,7 @@ import { Comment } from '../entities/comment/comment';
 import { CommentVote } from '../entities/comment/comment_vote';
 import { Member } from '../entities/member/member';
 import { Post } from '../entities/post/post';
+import { CommentText } from '../value_objects/comment/comment_text';
 import { PostVote } from '../value_objects/post/post_vote';
 
 export class PostService {
@@ -162,6 +163,30 @@ export class PostService {
 
         const upvote: PostVote = upvoteOrError.getValue();
         post.addVote(upvote);
+
+        return new Right(Result.ok<void>());
+    }
+
+    public replyToComment(
+        post: Post,
+        member: Member,
+        parentComment: Comment,
+        newCommentText: CommentText
+    ): Either<Result<any>, Result<void>> {
+        const commentOrError = Comment.create({
+            memberId: member.memberId,
+            text: newCommentText,
+            postId: post.postId,
+            parentCommentId: parentComment.commentId
+        });
+
+        if (commentOrError.isFailure) {
+            return new Left(commentOrError);
+        }
+
+        const comment: Comment = commentOrError.getValue();
+
+        post.addComment(comment);
 
         return new Right(Result.ok<void>());
     }
