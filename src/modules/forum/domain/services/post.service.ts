@@ -2,6 +2,8 @@ import { Left, Right } from '../../../../shared/core/either';
 import { Result } from '../../../../shared/core/result';
 import { DownvoteCommentResponse } from '../../usecases/comments/downvote_comment/downvote_comment';
 import { UpvoteCommentResponse } from '../../usecases/comments/upvote_comment/upvote_comment.response';
+import { DownvotePostResponse } from '../../usecases/post/downvote_post/downvote_post.response';
+import { UpvotePostResponse } from '../../usecases/post/upvote_post/upvote_post.response';
 import { Comment } from '../entities/comment/comment';
 import { CommentVote } from '../entities/comment/comment_vote';
 import { Member } from '../entities/member/member';
@@ -97,29 +99,70 @@ export class PostService {
         return new Right(Result.ok<void>());
     }
 
-    // TODO: Start from here!
-    // public downvotePost(post: Post, member: Member, existingVotesOnPostByMember: PostVote[]): DownvotePostresponse {
-    //     // If already downvoted, do nothing
-    //     const existingDownvote: PostVote | undefined = existingVotesOnPostByMember.find(vote => vote.isDownvote());
+    public downvotePost(post: Post, member: Member, existingVotesOnPostByMember: PostVote[]): DownvotePostResponse {
+        // If already downvoted, do nothing
+        const existingDownvote: PostVote | undefined = existingVotesOnPostByMember.find(vote => vote.isDownvote());
 
-    //     const downvoteAlreadyExists = !!existingDownvote;
+        const downvoteAlreadyExists = !!existingDownvote;
 
-    //     if (downvoteAlreadyExists) {
-    //         return new Right(Result.ok<void>());
-    //     }
+        if (downvoteAlreadyExists) {
+            return new Right(Result.ok<void>());
+        }
 
-    //     // if upvote exists, we need to remove it
-    //     const existingUpvote: PostVote | undefined = existingVotesOnPostByMember.find(vote => vote.isUpvote());
+        // if upvote exists, we need to remove it
+        const existingUpvote: PostVote | undefined = existingVotesOnPostByMember.find(vote => vote.isUpvote());
 
-    //     const upvoteAlreadyExists = !!existingUpvote;
+        const upvoteAlreadyExists = !!existingUpvote;
 
-    //     if (upvoteAlreadyExists) {
-    //         post.removeVote(existingUpvote);
+        if (upvoteAlreadyExists) {
+            post.removeVote(existingUpvote);
 
-    //         return new Right(Result.ok<void>());
-    //     }
+            return new Right(Result.ok<void>());
+        }
 
-    //     // Otherwise, we get to create the downvote now.
-    //     // const down;
-    // }
+        // Otherwise, we get to create the downvote now.
+        const downvoteOrError = PostVote.createDownvote(member.memberId, post.postId);
+
+        if (downvoteOrError.isFailure) {
+            return new Left(downvoteOrError);
+        }
+
+        const downvote: PostVote = downvoteOrError.getValue();
+        post.addVote(downvote);
+
+        return new Right(Result.ok<void>());
+    }
+
+    public upvotePost(post: Post, member: Member, existingVotesOnPostByMember: PostVote[]): UpvotePostResponse {
+        // If already upvoted, do nothing
+        const existingUpvote: PostVote | undefined = existingVotesOnPostByMember.find(vote => vote.isUpvote());
+
+        const upvoteAlreadyExists = !!existingUpvote;
+
+        if (upvoteAlreadyExists) {
+            return new Right(Result.ok<void>());
+        }
+
+        // if downvoted, remove the downvote
+        const existingDownvote: PostVote | undefined = existingVotesOnPostByMember.find(vote => vote.isDownvote());
+
+        const downvoteAlreadyExists = !!existingDownvote;
+
+        if (downvoteAlreadyExists) {
+            post.removeVote(existingDownvote);
+            return new Right(Result.ok<void>());
+        }
+
+        // Otherwise, add upvote
+        const upvoteOrError = PostVote.createUpvote(member.memberId, post.postId);
+
+        if (upvoteOrError.isFailure) {
+            return new Left(upvoteOrError);
+        }
+
+        const upvote: PostVote = upvoteOrError.getValue();
+        post.addVote(upvote);
+
+        return new Right(Result.ok<void>());
+    }
 }
